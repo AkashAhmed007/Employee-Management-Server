@@ -31,6 +31,7 @@ async function run() {
   try {
 
     const userCollection = client.db('Employee-Management').collection('User')
+    const workSheetCollection = client.db('Employee-Management').collection('Worksheet')
 
     app.get('/user', async(req,res)=>{
       const cursor = userCollection.find().sort()
@@ -43,6 +44,16 @@ async function run() {
     const result = await userCollection.insertOne(userData)
     res.send(result)
    }) 
+
+   app.get('/worksheet', async(req,res)=>{
+    const cursor = workSheetCollection.find().sort()
+    const result = await cursor.toArray()
+    res.send(result)
+  })
+   app.post('/worksheet', async(req,res)=>{
+    const data = req.body
+    const result = await workSheetCollection.insertOne(data)
+   })
 
 
 
