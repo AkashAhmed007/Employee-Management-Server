@@ -3,7 +3,7 @@ const app = express()
 const cors = require("cors")
 require('dotenv').config()
 const port = process.env.PORT || 8000
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
@@ -76,7 +76,16 @@ async function run() {
       res.send(result)
    })
 
+app.put('/employees/:id/verify', async(req,res)=>{
+  const id = req.params.id
+  const isVerified = req.body.isVerified
+  const result = await userCollection.updateOne(
+      {_id: new ObjectId(id)},
+      { $set:{isVerified}}
+  )
+  res.send(result)
 
+})
 
 
 
