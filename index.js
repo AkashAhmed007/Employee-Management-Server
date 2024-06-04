@@ -31,6 +31,7 @@ async function run() {
   try {
 
     const userCollection = client.db('Employee-Management').collection('User')
+    const socialLoginCollection = client.db('Employee-Management').collection('socialLoginUser')
     const workSheetCollection = client.db('Employee-Management').collection('Worksheet')
 
     app.get('/user', async(req,res)=>{
@@ -45,16 +46,35 @@ async function run() {
     res.send(result)
    }) 
 
+   app.get('/socialloginuser', async(req,res)=>{
+    const cursor = socialLoginCollection.find()
+    const result = await cursor.toArray()
+    res.send(result)
+  })
+
+   app.post('/socialloginuser',async(req,res)=>{
+    const userData = req.body
+    const result = await socialLoginCollection.insertOne(userData)
+    res.send(result)
+   }) 
+
    app.get('/worksheet', async(req,res)=>{
     const cursor = workSheetCollection.find().sort()
     const result = await cursor.toArray()
     res.send(result)
   })
+
    app.post('/worksheet', async(req,res)=>{
     const data = req.body
     const result = await workSheetCollection.insertOne(data)
+    res.send(result)
    })
 
+   app.get('/employees', async(req,res)=>{
+      const cursor = userCollection.find()
+      const result = await cursor.toArray()
+      res.send(result)
+   })
 
 
 
