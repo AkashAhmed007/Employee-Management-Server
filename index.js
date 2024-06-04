@@ -59,7 +59,7 @@ async function run() {
    }) 
 
    app.get('/worksheet', async(req,res)=>{
-    const cursor = workSheetCollection.find().sort()
+    const cursor = workSheetCollection.find().sort({date: -1})
     const result = await cursor.toArray()
     res.send(result)
   })
