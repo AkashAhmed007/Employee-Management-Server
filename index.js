@@ -33,6 +33,7 @@ async function run() {
     const userCollection = client.db('Employee-Management').collection('User')
     const socialLoginCollection = client.db('Employee-Management').collection('socialLoginUser')
     const workSheetCollection = client.db('Employee-Management').collection('Worksheet')
+    const paymentCollection = client.db('Employee-Management').collection('Payment')
 
     app.get('/user', async(req,res)=>{
       const cursor = userCollection.find().sort()
@@ -87,8 +88,22 @@ app.put('/employees/:id/verify', async(req,res)=>{
 
 })
 
+app.post('/pay', async(req,res)=>{
+  const {amount, month, year} = req.body.data
+  const existingPayment = await paymentCollection.findOne({"month": month, "year":year, "amount":amount })
+  if(existingPayment){
+    return res.send({ success: false, message: "Payment for this month and year already exists." });
+  }
+  const result = await paymentCollection.insertOne({amount,month,year})
+  console.log(result)
+  res.status(200).send({ success: true, message: "Payment successful!"})
+})
 
-
+app.get('/pay', async(req,res)=>{
+      const cursor = paymentCollection.find()
+      const result = await cursor.toArray()
+      res.send(result)
+})
 
 
 
