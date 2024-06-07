@@ -89,13 +89,12 @@ app.put('/employees/:id/verify', async(req,res)=>{
 })
 
 app.post('/pay', async(req,res)=>{
-  const {amount, month, year} = req.body.data
-  const existingPayment = await paymentCollection.findOne({"month": month, "year":year, "amount":amount })
+  const {amount, month, year , email} = req.body.data
+  const existingPayment = await paymentCollection.findOne({"month": month, "year":year, "amount":amount})
   if(existingPayment){
     return res.send({ success: false, message: "Payment for this month and year already exists." });
   }
-  const result = await paymentCollection.insertOne({amount,month,year})
-  console.log(result)
+ await paymentCollection.insertOne({amount,month,year,email})
   res.status(200).send({ success: true, message: "Payment successful!"})
 })
 
@@ -112,12 +111,12 @@ app.get('/employeelist/:email', async(req,res)=>{
       res.send(result)
 })
 
-
-
-
-
-
-
+app.get('/payment/:email', async(req,res)=>{
+  const email = req.params.email;
+  const query = {'email' : email};
+  const result = await paymentCollection.find(query).toArray()
+  res.send(result)
+})
 
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
