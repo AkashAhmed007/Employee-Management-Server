@@ -71,6 +71,13 @@ async function run() {
     res.send(result)
    })
 
+   app.get('/worksheet/:email',async(req,res)=>{
+      const email = req.params.email;
+      const query = {'email' : email};
+      const result = await workSheetCollection.find(query).toArray()
+      res.send(result)
+   })
+
    app.get('/employees', async(req,res)=>{
       const cursor = userCollection.find()
       const result = await cursor.toArray()
