@@ -141,27 +141,6 @@ app.put('/fire/:id', async (req, res) => {
 });
 
 
-app.get('/users/:uid', async (req, res) => {
-  try {
-    const user = await userCollection.findOne({ uid: req.params.uid });
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    res.json(user);
-  } catch (error) {
-    res.status(500).json({ message: 'Server error' });
-  }
-});
-
-
-
-
-
-
-
-
-
-
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
