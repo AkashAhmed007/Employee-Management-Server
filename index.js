@@ -10,7 +10,7 @@ app.get('/', (req, res) => {
 })
 
 app.use(cors({
-  origin: ['http://localhost:5173'],
+  origin: ['http://localhost:5173','http://localhost:8000','https://employee-management-6d5c9.web.app','https://fancy-paletas-055252.netlify.app','https://employee-management-server-five.vercel.app'],
   credentials: true
 }))
 app.use(express.json())
@@ -36,7 +36,7 @@ async function run() {
     const paymentCollection = client.db('Employee-Management').collection('Payment')
 
     app.get('/user', async(req,res)=>{
-      const cursor = userCollection.find().sort()
+      const cursor = userCollection.find()
       const result = await cursor.toArray()
       res.send(result)
     })
